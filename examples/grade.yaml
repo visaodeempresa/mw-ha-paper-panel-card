@@ -1,0 +1,21 @@
+# Grade de 3 colunas: o primeiro card ocupa a linha inteira (span 3) e os
+# outros três dividem a linha de baixo. Cada peça afunda no papel.
+type: custom:mw-paper-panel-card
+header: ESCRITÓRIO
+shell_color: "#a5123f"
+paper_color: red-2
+layout: grid
+columns: 3
+child_relief: sunken
+child_padding: 8
+cards:
+  - type: custom:power-button-card
+    entity: switch.escritorio_tomada
+    grid_options:
+      columns: 3
+  - type: custom:simple-button-card
+    entity: light.escritorio
+  - type: custom:simple-button-card
+    entity: fan.escritorio
+  - type: custom:simple-button-card
+    entity: climate.escritorio

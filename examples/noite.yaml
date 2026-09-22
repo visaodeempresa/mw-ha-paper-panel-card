@@ -1,0 +1,19 @@
+# Papel de noite e divisórias com rótulo, agrupando cards por ambiente.
+# Aqui as peças são SALIENTES sobre o papel, não afundadas.
+type: custom:mw-paper-panel-card
+shell_color: "#1f2937"
+paper_dark: true
+paper_color: indigo-3
+separator_style: line
+child_relief: raised
+child_padding: 8
+gap: 8
+cards:
+  - type: divider
+    label: Quarto
+  - type: custom:mw-humidifier-card
+    entity: humidifier.quarto
+  - type: divider
+    label: Suíte
+  - type: custom:mw-humidifier-card
+    entity: humidifier.suite

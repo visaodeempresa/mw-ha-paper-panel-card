@@ -1,0 +1,21 @@
+# Uma planta baixa (picture-elements) dentro do papel, com a legenda embaixo.
+# O painel não redesenha o picture-elements: só o emoldura e o achata.
+type: custom:mw-paper-panel-card
+header: PLANTA
+shell_color: "#3b2f5e"
+paper_color: violet-2
+content_padding: 10
+separators: between
+cards:
+  - type: picture-elements
+    image: /local/plantas/casa.png
+    elements:
+      - type: custom:mw-light-element
+        entity: light.sala
+        style:
+          top: 42%
+          left: 28%
+  - type: entities
+    entities:
+      - light.sala
+      - light.cozinha

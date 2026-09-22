@@ -1,0 +1,21 @@
+# Fileira horizontal com pesos: "Agora" ocupa o dobro da largura dos outros
+# dois. A divisória automática vira um fio EM PÉ entre os cards.
+type: custom:mw-paper-panel-card
+header: CLIMA
+header_icon: mdi:weather-partly-cloudy
+shell_color: "#14532d"
+paper_color: green-2
+layout: horizontal
+gap: 10
+separators: between
+cards:
+  - type: custom:mw-leticia-weather-card
+    entity: weather.casa
+    grid_options:
+      columns: 2
+  - type: entity
+    entity: sensor.temperatura_maxima
+    name: Máx
+  - type: entity
+    entity: sensor.temperatura_minima
+    name: Mín

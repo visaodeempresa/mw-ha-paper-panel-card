@@ -1,0 +1,45 @@
+# Pilha vertical com divisórias automáticas — o desenho da referência.
+# Sem casca: o próprio papel é o card. O rodapé de ícones é um segundo
+# mw-paper-panel-card aninhado, em fileira e sem relevo.
+type: custom:mw-paper-panel-card
+shell: false
+paper_color: paper
+depth: 3d
+panel_radius: 28
+content_padding: 20
+gap: 4
+separators: between
+separator_inset: 2
+cards:
+  - type: markdown
+    content: "**7 Hetman St** → **96 Brey Ln**"
+  - type: entity
+    entity: sensor.rota_tempo
+    name: Tempo
+  - type: entity
+    entity: sensor.rota_distancia
+    name: Distância
+  - type: entity
+    entity: sensor.rota_chegada
+    name: Chegada
+  - type: divider
+    inset: 0
+  - type: custom:mw-paper-panel-card
+    shell: false
+    depth: flat
+    layout: horizontal
+    content_padding: 0
+    gap: 0
+    cards:
+      - type: button
+        icon: mdi:home
+        show_name: false
+      - type: button
+        icon: mdi:map-marker
+        show_name: false
+      - type: button
+        icon: mdi:account
+        show_name: false
+      - type: button
+        icon: mdi:menu
+        show_name: false
