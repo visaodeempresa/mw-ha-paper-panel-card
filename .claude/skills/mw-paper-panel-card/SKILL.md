@@ -77,3 +77,10 @@ guardar o binário em `/Volumes` — volume externo some e o binário some junto
 DevOps padrão (`IA/tools/mw-devops.sh apply|github`), marca
 (`IA/tools/mw-brand.sh pr`), `repos.tsv` e rulesets entram **depois** da
 validação do dono. Até lá o repo não tem CI nem release.
+
+## DevOps
+`develop` (padrão) → PR → `main` → auto-release (bump pelo assunto do commit,
+tag, Release com o asset) → `deploy-ha` (HACS baixa, `?v=` no recurso,
+conferência no destino). Workflows são gerados por `IA/tools/mw-devops.sh
+apply` — editar aqui é perder na próxima aplicação. Exige os segredos
+`HA_URL`/`HA_TOKEN`. Conferir: `IA/tools/mw-devops.sh check <repo>`.
