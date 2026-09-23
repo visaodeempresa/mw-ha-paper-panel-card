@@ -37,6 +37,9 @@ SHOTS=(
   "rota|rota|352|326"
   "arranjos|grade,fileira|780|320"
   "noite|noite,chapado|680|318"
+  "fotos|foto,foto_moldura|720|414"
+  "presets|preset_aba,preset_cabecalho,preset_vidro|926|314"
+  "preset-faixa|preset_faixa|474|155"
 )
 
 FILTER="${1:-}"

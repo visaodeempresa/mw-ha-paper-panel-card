@@ -28,6 +28,12 @@ divisórias** de papel entre eles.
   com o relevo do **MW Power Button**.
 - **A peça afunda ou sobe** — o card de dentro pode ficar gravado no papel ou
   saliente sobre ele.
+- **Imagem de fundo** — foto por baixo, com o relevo 3D continuando **por cima**
+  dela; desfoque, véu, tingimento e moldura de papel em volta.
+- **Volume regulável** — o mesmo relevo, de discreto a muito encorpado.
+- **Estilos prontos** — cinco pacotes de infográfico (aba numerada, faixa
+  lateral, cabeçalho colorido, cartão liso, vidro fosco), todos abertos a
+  ajuste.
 - **Editor visual rico** — lista de cards com mover/duplicar/apagar, o
   seletor de cards do próprio HA, campos de span por item e todos os
   controles de aparência.
@@ -131,6 +137,58 @@ cards:
   - { type: entity, entity: sensor.temperatura_minima, name: Mín }
 ```
 
+
+### Estilos prontos — [`examples/estilo-aba.yaml`](examples/estilo-aba.yaml) · [`estilo-cabecalho`](examples/estilo-cabecalho.yaml) · [`estilo-faixa`](examples/estilo-faixa.yaml)
+
+<img src="docs/presets.png" alt="Três estilos prontos: aba numerada com medalhão, cabeçalho colorido com medalhão na costura, e vidro fosco sobre a foto" width="926">
+
+`preset:` é só **um pacote de valores** — nada nele é especial em tempo de
+desenho, e qualquer chave que você escrever no YAML ganha do estilo. São
+cinco: `aba-numerada`, `faixa-lateral`, `cabecalho-colorido`, `cartao-liso`
+e `vidro-fosco`.
+
+```yaml
+type: custom:mw-paper-panel-card
+preset: aba-numerada
+accent_color: "#f5a524"      # o degradê nasce daqui; accent_color2 é opcional
+accent_label: "1"
+badge_icon: mdi:lightbulb-outline
+badge_position: top-left
+cards:
+  - { type: custom:simple-button-card, entity: light.escritorio }
+  - { type: entity, entity: sensor.escritorio_consumo, name: Consumo }
+```
+
+<img src="docs/preset-faixa.png" alt="Faixa lateral: pílula envernizada de pé ao lado do conteúdo, numa fileira horizontal" width="474">
+
+A peça de realce tem **relevo próprio**: verniz que para na metade (é o corte
+que faz o olho ler plástico brilhante, não degradê), quina iluminada em cima e
+sombra de contato curta — sombra curta é peça **pousada**; sombra longa é peça
+flutuando.
+
+### Imagem de fundo — [`examples/foto.yaml`](examples/foto.yaml) · [`examples/vidro.yaml`](examples/vidro.yaml)
+
+<img src="docs/fotos.png" alt="Dois painéis com foto de fundo: um com a foto de ponta a ponta e o relevo por cima, outro com moldura de papel em volta da foto" width="720">
+
+A imagem é uma **camada**, não o fundo da caixa: o relevo do papel vive numa
+camada acima dela, senão a foto cobriria a luz da quina e o card viraria um
+retângulo chapado com uma imagem dentro.
+
+```yaml
+type: custom:mw-paper-panel-card
+shell: false
+volume: 2.5                       # relevo mais encorpado
+background_image: /local/fundos/cidade.jpg
+background_dim: 0.28              # véu que devolve o contraste do texto
+background_relief: soft           # meia-força: 0,90 de branco sobre foto vira névoa
+content_text_color: "rgba(255,255,255,0.95)"
+separators: between
+cards: [...]
+```
+
+Com `background_inset` a foto recua e sobra uma **moldura de papel** em volta —
+e o bisel desce junto, para o vão da foto, como numa moldura de verdade.
+
 ### Papel de noite e painel chapado — [`examples/noite.yaml`](examples/noite.yaml)
 
 <img src="docs/noite.png" alt="À esquerda, papel escuro com divisórias rotuladas e peças salientes; à direita, painel chapado sem casca com grade de 2 colunas" width="680">
@@ -218,6 +276,41 @@ colocou.
 | `padding` / `content_padding` | px | `14` / `18` | respiro da casca e do papel. |
 | `panel_min_height` | px | `0` | altura mínima do papel (é o que faz o peso de altura valer na pilha). |
 
+
+### Estilo pronto, realce e medalhão
+
+| chave | tipo | padrão | o que faz |
+|---|---|---|---|
+| `preset` | `none` · `aba-numerada` · `faixa-lateral` · `cabecalho-colorido` · `cartao-liso` · `vidro-fosco` | `none` | pacote de valores aplicado **antes** do seu YAML. |
+| `accent_color` | cor | — | cor da peça de realce; sem ela não há realce. |
+| `accent_color2` | cor | clareada da primeira | fim do degradê. |
+| `accent_mode` | `outside` · `inside` · `pill` | `outside` | aba saindo por trás, banda colada na borda, ou pílula solta dentro. |
+| `accent_side` | `right` · `left` · `top` · `bottom` | `right` | de que lado. |
+| `accent_size` | px | `26` | espessura. |
+| `accent_length` | % | `82` | comprimento no outro eixo. |
+| `accent_radius` | px | `10` | raio (`999` = pílula). |
+| `accent_gloss` | bool | `true` | verniz. |
+| `accent_label` / `accent_icon` | texto / ícone | — | o número e o ícone dentro do realce. |
+| `badge_icon` | ícone | — | medalhão redondo; sem ícone não existe. |
+| `badge_size` | px | `48` | diâmetro. |
+| `badge_position` | `top-center` · `top-left` · `top-right` | `top-center` | onde ele senta. Com banda em cima, ele monta **na costura**. |
+| `badge_color` | cor | branco | o medalhão é branco nos dois temas de propósito — é a peça que salta. |
+
+### Imagem de fundo
+
+| chave | tipo | padrão | o que faz |
+|---|---|---|---|
+| `background_image` | URL | — | `/local/...`, `/api/image_proxy/...` ou `https://...`. |
+| `background_target` | `panel` · `shell` · `both` | `panel` | onde a foto entra. |
+| `background_fit` | `cover` · `contain` · `fill` · `repeat` | `cover` | como preenche. |
+| `background_position` | posição CSS | `center` | que parte da foto fica visível. |
+| `background_blur` | px | `0` | desfoque (a imagem é ampliada junto, senão a borda esvazia). |
+| `background_dim` | 0–1 | `0` | véu preto por cima. |
+| `background_tint` | cor | — | véu colorido por cima. |
+| `background_inset` | px | `0` | moldura de papel em volta da foto. |
+| `background_relief` | `soft` · `full` · `none` | `soft` | força do relevo **por cima** da foto. |
+| `volume` | 0,25–4 | `1` | multiplica a **geometria** do relevo, nunca as opacidades. |
+
 ### Os cards de dentro
 
 | chave | tipo | padrão | o que faz |
@@ -282,12 +375,14 @@ por card — feio, e honesto: nunca deixa a tela quebrada.
   fileira de ícones dentro de uma pilha.
 - **`flat_children: false`** devolve a moldura original dos cards de dentro,
   útil quando o que você quer é uma bandeja de cards, não uma folha única.
+- **A URL da imagem é escapada** antes de entrar no CSS, e esquema que executa
+  código (`javascript:`) não vira imagem de fundo.
 
 ## Desenvolvimento
 
 ```bash
 node --check dist/mw-paper-panel-card.js   # sintaxe
-node tools/probe.js                        # 67 verificações sem navegador
+node tools/probe.js                        # 103 verificações sem navegador
 python3 -m http.server 8777                # bancada: /tools/preview.html
 tools/shots.sh                             # refaz as fotos do README
 ```

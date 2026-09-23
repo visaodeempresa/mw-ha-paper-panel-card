@@ -1,0 +1,15 @@
+# Estilo pronto «cabeçalho-colorido»: banda de cor no topo e o medalhão branco
+# montado na costura entre a banda e o papel.
+type: custom:mw-paper-panel-card
+preset: cabecalho-colorido
+accent_color: "#0ea5a4"
+badge_icon: mdi:map-marker
+badge_size: 46
+paper_dark: true
+paper_color: indigo-6
+cards:
+  - type: markdown
+    content: "### CONSECTETUR"
+  - type: entity
+    entity: binary_sensor.porta_da_cozinha
+    name: Estado

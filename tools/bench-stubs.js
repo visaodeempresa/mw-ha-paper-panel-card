@@ -43,6 +43,7 @@
      Paths: Material Design Icons (@mdi/js v7.4.47), Apache-2.0. */
   const MDI = {
     "account": "M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z",
+    "account-outline": "M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,6A2,2 0 0,0 10,8A2,2 0 0,0 12,10A2,2 0 0,0 14,8A2,2 0 0,0 12,6M12,13C14.67,13 20,14.33 20,17V20H4V17C4,14.33 9.33,13 12,13M12,14.9C9.03,14.9 5.9,16.36 5.9,17V18.1H18.1V17C18.1,16.36 14.97,14.9 12,14.9Z",
     "air-conditioner": "M6.59,0.66C8.93,-1.15 11.47,1.06 12.04,4.5C12.47,4.5 12.89,4.62 13.27,4.84C13.79,4.24 14.25,3.42 14.07,2.5C13.65,0.35 16.06,-1.39 18.35,1.58C20.16,3.92 17.95,6.46 14.5,7.03C14.5,7.46 14.39,7.89 14.16,8.27C14.76,8.78 15.58,9.24 16.5,9.06C18.63,8.64 20.38,11.04 17.41,13.34C15.07,15.15 12.53,12.94 11.96,9.5C11.53,9.5 11.11,9.37 10.74,9.15C10.22,9.75 9.75,10.58 9.93,11.5C10.35,13.64 7.94,15.39 5.65,12.42C3.83,10.07 6.05,7.53 9.5,6.97C9.5,6.54 9.63,6.12 9.85,5.74C9.25,5.23 8.43,4.76 7.5,4.94C5.37,5.36 3.62,2.96 6.59,0.66M5,16H7A2,2 0 0,1 9,18V24H7V22H5V24H3V18A2,2 0 0,1 5,16M5,18V20H7V18H5M12.93,16H15L12.07,24H10L12.93,16M18,16H21V18H18V22H21V24H18A2,2 0 0,1 16,22V18A2,2 0 0,1 18,16Z",
     "fan": "M12,11A1,1 0 0,0 11,12A1,1 0 0,0 12,13A1,1 0 0,0 13,12A1,1 0 0,0 12,11M12.5,2C17,2 17.11,5.57 14.75,6.75C13.76,7.24 13.32,8.29 13.13,9.22C13.61,9.42 14.03,9.73 14.35,10.13C18.05,8.13 22.03,8.92 22.03,12.5C22.03,17 18.46,17.1 17.28,14.73C16.78,13.74 15.72,13.3 14.79,13.11C14.59,13.59 14.28,14 13.88,14.34C15.87,18.03 15.08,22 11.5,22C7,22 6.91,18.42 9.27,17.24C10.25,16.75 10.69,15.71 10.89,14.79C10.4,14.59 9.97,14.27 9.65,13.87C5.96,15.85 2,15.07 2,11.5C2,7 5.56,6.89 6.74,9.26C7.24,10.25 8.29,10.68 9.22,10.87C9.41,10.39 9.73,9.97 10.14,9.65C8.15,5.96 8.94,2 12.5,2Z",
     "home": "M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z",
@@ -107,6 +108,81 @@
               { demo: "icon", icon: "mdi:account" }, { demo: "icon", icon: "mdi:menu" },
             ],
           },
+        ],
+      },
+    },
+    foto: {
+      title: "Imagem de fundo · o relevo continua por cima dela", width: 320,
+      cfg: {
+        shell: false, panel_radius: 30, content_padding: 18, volume: 2.5,
+        background_image: "../docs/exemplo-fundo.svg",
+        background_dim: 0.28, content_text_color: "rgba(255,255,255,0.95)",
+        separators: "between", separator_color: "rgba(255,255,255,0.22)",
+        panel_min_height: 300, gap: 4,
+        cards: [
+          { demo: "row", left: "Volo", right: "09:35" },
+          { demo: "row", left: "Tempo", right: "4 min" },
+          { demo: "row", left: "Distância", right: "0.8 mi" },
+        ],
+      },
+    },
+    foto_moldura: {
+      title: "Foto com moldura de papel · volume 2,5", width: 320,
+      cfg: {
+        shell_color: "#2b3640", paper_color: "blue-5", volume: 2.5,
+        background_image: "../docs/exemplo-fundo.svg",
+        background_inset: 10, background_blur: 3, background_dim: 0.15,
+        header: "CHEGADA", header_icon: "mdi:map-marker",
+        content_padding: 14, panel_min_height: 260,
+        child_relief: "sunken", child_padding: 10,
+        cards: [
+          { title: "96 Brey Ln" },
+          { demo: "icon", icon: "mdi:map-marker" },
+        ],
+      },
+    },
+    preset_aba: {
+      title: "Estilo pronto «aba-numerada»", width: 260,
+      cfg: {
+        preset: "aba-numerada", accent_color: "#f5a524", accent_label: "1",
+        badge_icon: "mdi:account-outline", badge_size: 40, badge_position: "top-left",
+        cards: [
+          { title: "LOREM IPSUM" },
+          { demo: "row", left: "Consumo", right: "1,2 kWh" },
+        ],
+      },
+    },
+    preset_faixa: {
+      title: "Estilo pronto «faixa-lateral»", width: 420,
+      cfg: {
+        preset: "faixa-lateral", accent_color: "#7c3aed", accent_color2: "#ec4899",
+        cards: [
+          { title: "Option 01", grid_options: { columns: 1 } },
+          { demo: "icon", icon: "mdi:lightbulb" },
+          { title: "Lorem ipsum é só texto de exemplo.", grid_options: { columns: 2 } },
+        ],
+      },
+    },
+    preset_cabecalho: {
+      title: "Estilo pronto «cabeçalho-colorido»", width: 260,
+      cfg: {
+        preset: "cabecalho-colorido", accent_color: "#0ea5a4",
+        badge_icon: "mdi:map-marker", badge_size: 46,
+        paper_dark: true, paper_color: "indigo-6",
+        cards: [
+          { title: "CONSECTETUR" },
+          { demo: "row", left: "Estado", right: "Aberto" },
+        ],
+      },
+    },
+    preset_vidro: {
+      title: "Estilo pronto «vidro-fosco» sobre a foto", width: 300,
+      cfg: {
+        preset: "vidro-fosco", background_image: "../docs/exemplo-fundo.svg",
+        panel_min_height: 220, separators: "between", gap: 4,
+        cards: [
+          { demo: "row", left: "Volo", right: "09:35" },
+          { demo: "row", left: "Tempo", right: "4 min" },
         ],
       },
     },

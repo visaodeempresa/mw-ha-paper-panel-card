@@ -1,0 +1,15 @@
+# Estilo pronto «faixa-lateral»: fileira larga com a pílula envernizada de pé
+# ao lado do conteúdo. O degradê nasce de uma cor só, ou das duas.
+type: custom:mw-paper-panel-card
+preset: faixa-lateral
+accent_color: "#7c3aed"
+accent_color2: "#ec4899"
+cards:
+  - type: markdown
+    content: "**Option 01**"
+  - type: custom:simple-button-card
+    entity: light.estantes
+  - type: markdown
+    content: Lorem ipsum é só texto de exemplo.
+    grid_options:
+      columns: 2

@@ -1,0 +1,15 @@
+# Estilo pronto «aba-numerada»: cartão de papel com a aba colorida saindo por
+# trás e o número nela. O medalhão redondo é opcional.
+type: custom:mw-paper-panel-card
+preset: aba-numerada
+accent_color: "#f5a524"
+accent_label: "1"
+badge_icon: mdi:lightbulb-outline
+badge_position: top-left
+badge_size: 40
+cards:
+  - type: custom:simple-button-card
+    entity: light.escritorio
+  - type: entity
+    entity: sensor.escritorio_consumo
+    name: Consumo

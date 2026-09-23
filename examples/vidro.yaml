@@ -1,0 +1,15 @@
+# Estilo pronto «vidro-fosco»: a foto entra desfocada e o papel vira vidro.
+# É o preset que já traz desfoque, véu e a tinta clara do texto.
+type: custom:mw-paper-panel-card
+preset: vidro-fosco
+background_image: /local/fundos/cidade.jpg
+panel_min_height: 220
+separators: between
+gap: 4
+cards:
+  - type: entity
+    entity: sensor.rota_chegada
+    name: Chegada
+  - type: entity
+    entity: sensor.rota_tempo
+    name: Tempo

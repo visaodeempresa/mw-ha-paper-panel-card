@@ -318,6 +318,96 @@ ok(saida.cards[1].title === "A", "mover para baixo não trocou os vizinhos");
 ed._cardAction("del", 0);
 ok(saida.cards.length === 3, "apagar não removeu o item");
 
+
+/* 16. volume: multiplica a geometria do relevo, nunca as opacidades */
+const v1 = vars(await mk({ cards: [] }))["--mw-elev"];
+const v2 = vars(await mk({ volume: 2, cards: [] }))["--mw-elev"];
+ok(v1.includes("inset 4px 4px 8px"), "volume 1 deveria manter a geometria de sempre");
+ok(v2.includes("inset 8px 8px 16px"), "volume 2 deveria dobrar deslocamento e borrão");
+ok(v2.includes("rgba(255,252,240,0.90)"), "volume não pode mexer na opacidade da luz do papel");
+ok(v2.includes("0 24px 56px"), "volume 2 deveria dobrar a sombra projetada");
+ok(vars(await mk({ volume: 99, cards: [] }))["--mw-elev"].includes("16px 16px 32px"),
+  "volume sem teto: deveria travar em 4");
+ok(vars(await mk({ volume: 0, cards: [] }))["--mw-elev"].includes("1px 1px 2px"),
+  "volume sem piso: deveria travar em 0.25");
+ok(vars(await mk({ volume: 3, child_relief: "sunken", cards: [] }))["--mw-sunken"].includes("6px 6px 15px"),
+  "o relevo da peça de dentro também deveria seguir o volume");
+
+/* 17. imagem de fundo: é camada, e o relevo continua por cima dela */
+const semImg = await mk({ cards: [{ type: "markdown" }] });
+ok(vars(semImg)["--mw-bg"] === "none", "sem imagem o card não deveria montar camada de fundo");
+ok(semImg.shadowRoot.querySelector(".panelbg").hidden, "camada de imagem deveria nascer escondida");
+ok(!semImg.shadowRoot.querySelector(".panel")._classes.has("hasbg"), "sem imagem o painel não recorta");
+
+const img = await mk({ background_image: "/local/fundo.jpg", cards: [{ type: "markdown" }] });
+has(vars(img)["--mw-bg"], 'url("/local/fundo.jpg")', "a imagem não chegou à camada de fundo");
+ok(!img.shadowRoot.querySelector(".panelbg").hidden, "com imagem a camada do papel deveria aparecer");
+ok(img.shadowRoot.querySelector(".panel")._classes.has("hasbg"), "com imagem o painel precisa recortar a foto no raio");
+ok(!img.shadowRoot.querySelector(".emboss")._classes.has("off"),
+  "o relevo interno precisa continuar desenhado POR CIMA da imagem");
+ok(vars(img)["--mw-elev-out"].indexOf("inset") < 0, "a sombra de fora não pode levar inset junto");
+has(vars(img)["--mw-elev-in"], "inset", "a camada de relevo ficou sem sombra interna");
+/* a luz do papel entra em meia-força sobre foto: a 0,90 ela vira névoa */
+has(vars(img)["--mw-elev-in"], "rgba(255,252,240,0.405)", "relevo sobre foto deveria nascer em meia-força");
+has(vars(await mk({ background_image: "/local/f.jpg", background_relief: "full", cards: [] }))["--mw-elev-in"],
+  "rgba(255,252,240,0.90)", "background_relief: full deveria devolver a luz cheia");
+ok((await mk({ background_image: "/local/f.jpg", background_relief: "none", cards: [] }))
+  .shadowRoot.querySelector(".emboss")._classes.has("off"), "background_relief: none deveria apagar a camada");
+/* imagem só na casca não mexe no relevo do papel, que continua em folha */
+has(vars(await mk({ background_image: "/local/f.jpg", background_target: "shell", cards: [] }))["--mw-elev"],
+  "rgba(255,252,240,0.90)", "foto na casca não pode enfraquecer o relevo do papel");
+/* relevo chapado não deixa camada de relevo vazia desenhando nada */
+ok((await mk({ background_image: "/local/f.jpg", depth: "flat", cards: [] }))
+  .shadowRoot.querySelector(".emboss")._classes.has("off"),
+  "sem relevo, a camada de cima deveria sair do caminho");
+
+/* onde a imagem entra */
+const naCasca = await mk({ background_image: "/local/f.jpg", background_target: "shell", cards: [] });
+ok(!naCasca.shadowRoot.querySelector(".shellbg").hidden && naCasca.shadowRoot.querySelector(".panelbg").hidden,
+  "background_target: shell deveria pintar só a casca");
+const nosDois = await mk({ background_image: "/local/f.jpg", background_target: "both", cards: [] });
+ok(!nosDois.shadowRoot.querySelector(".shellbg").hidden && !nosDois.shadowRoot.querySelector(".panelbg").hidden,
+  "background_target: both deveria pintar os dois");
+/* casca desligada não ganha imagem que ninguém veria */
+ok((await mk({ background_image: "/local/f.jpg", background_target: "shell", shell: false, cards: [] }))
+  .shadowRoot.querySelector(".shellbg").hidden, "sem casca não há onde pintar a casca");
+
+/* véus: tinta e escurecimento na MESMA camada, a foto por baixo */
+const veu = await mk({ background_image: "/local/f.jpg", background_dim: 0.4,
+  background_tint: "rgba(0, 90, 120, 0.3)", cards: [] });
+const camadas = vars(veu)["--mw-bg"];
+ok(camadas.indexOf("rgba(0, 90, 120, 0.3)") < camadas.indexOf("rgba(0,0,0,0.4)")
+  && camadas.indexOf("rgba(0,0,0,0.4)") < camadas.indexOf("url("),
+  "ordem errada dos véus: tinta, escurecimento e a foto por último");
+ok(vars(await mk({ background_image: "/local/f.jpg", background_dim: 9, cards: [] }))["--mw-bg"]
+  .includes("rgba(0,0,0,1)"), "escurecimento deveria travar em 1");
+
+/* desfoque amplia a imagem: o borrão puxa o vazio de fora para dentro */
+const bor = vars(await mk({ background_image: "/local/f.jpg", background_blur: 12, cards: [] }));
+ok(bor["--bgblur"] === "blur(12px)", "o desfoque não chegou à camada");
+ok(bor["--bgscale"].startsWith("scale(1."), "imagem desfocada precisa de um empurrãozinho de escala");
+ok(vars(await mk({ background_image: "/local/f.jpg", cards: [] }))["--bgscale"] === "none",
+  "sem desfoque não há por que escalar a imagem");
+
+/* moldura de papel em volta da foto */
+const mold = vars(await mk({ background_image: "/local/f.jpg", background_inset: 10, panel_radius: 22, cards: [] }));
+ok(mold["--bgi"] === "10px", "a moldura de papel não chegou");
+ok(mold["--bgr"] === "12px", "o raio da foto deveria acompanhar o recuo da moldura");
+
+/* como a imagem preenche */
+ok(vars(await mk({ background_image: "/local/f.jpg", background_fit: "fill", cards: [] }))["--bgsize"] === "100% 100%",
+  "fill deveria esticar a imagem");
+const lad = vars(await mk({ background_image: "/local/f.jpg", background_fit: "repeat", cards: [] }));
+ok(lad["--bgrep"] === "repeat", "ladrilho deveria repetir");
+
+/* URL do dono entra escapada, e esquema que executa código não entra */
+const aspas = vars(await mk({ background_image: '/local/a".jpg', cards: [] }))["--mw-bg"];
+ok(aspas.includes('\\"'), "aspa na URL precisa ser escapada, senão fecha o url() e o resto vira CSS");
+ok(vars(await mk({ background_image: "javascript:alert(1)", cards: [] }))["--mw-bg"] === "none",
+  "esquema que executa código não pode virar imagem de fundo");
+ok(vars(await mk({ background_image: "   ", cards: [] }))["--mw-bg"] === "none",
+  "URL em branco não deveria montar camada nenhuma");
+
 /* ------------------------------- resultado ------------------------------ */
 
 if (fails.length) {

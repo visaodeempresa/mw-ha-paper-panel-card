@@ -1,0 +1,24 @@
+# Imagem de fundo com o relevo 3D continuando por cima dela, e volume 2,5.
+# O véu escuro (background_dim) é o que devolve o contraste do texto.
+type: custom:mw-paper-panel-card
+shell: false
+panel_radius: 30
+content_padding: 18
+volume: 2.5
+background_image: /local/fundos/cidade.jpg
+background_fit: cover
+background_position: center
+background_dim: 0.28
+background_relief: soft
+content_text_color: "rgba(255,255,255,0.95)"
+separator_color: "rgba(255,255,255,0.22)"
+separators: between
+panel_min_height: 300
+gap: 4
+cards:
+  - type: entity
+    entity: sensor.rota_tempo
+    name: Tempo
+  - type: entity
+    entity: sensor.rota_distancia
+    name: Distância

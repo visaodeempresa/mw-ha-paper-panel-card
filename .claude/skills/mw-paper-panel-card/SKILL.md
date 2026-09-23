@@ -7,8 +7,10 @@ description: >-
   vários cards dentro de um card", "põe esses botões lado a lado", "uma grade
   de cards", "linha divisória entre os cards", "o card de dentro não aparece",
   "o card de dentro ficou com moldura", "o span não funciona", "o picture-
-  elements dentro do painel", ou quando pedir foto/exemplo novo para o README
-  deste repositório.
+  elements dentro do painel", "põe uma foto de fundo no card", "quero mais
+  volume/3D", "o relevo sumiu por cima da imagem", "estilo pronto", "preset",
+  "aba numerada", "faixa lateral", "cabeçalho colorido", "vidro fosco",
+  ou quando pedir foto/exemplo novo para o README deste repositório.
 ---
 
 # MW Paper Panel Card
@@ -39,6 +41,14 @@ description: >-
 | a foto do README sai sem ícone | o dublê da bancada lê o **atributo** `icon`; o HA aceita propriedade | `_paintHeader` grava propriedade **e** atributo |
 | ícone do cabeçalho enorme na bancada | o `<svg>` do dublê preenche a caixa; `--mdc-icon-size` só existe no HA | `width`/`height` explícitos no CSS do `.hdr ha-icon` |
 | `TypeError: ….in is not a function` vindo do `setConfig` | **crase em comentário dentro de bloco de estilo** fecha o template literal | nunca usar crase em comentário dentro de template literal |
+| a foto cobre o relevo e o card fica chapado | imagem posta como `background` da caixa | a imagem é CAMADA (`.bg`) e o relevo vive em `.emboss`, por cima dela |
+| o relevo vira névoa branca por cima da foto | a luz do papel (branco 0,90) foi calibrada para folha creme | `background_relief` nasce em `soft` (0,45); `full` devolve a luz cheia |
+| a foto desfocada fica com borda vazia | o borrão puxa o transparente de fora para dentro | `--bgscale` amplia a camada junto com o desfoque |
+| aspa na URL da imagem quebra o CSS do card inteiro | `url()` fechado pela aspa do dono | `cssUrl()` escapa `\` e `"`, e recusa `javascript:` |
+| aumentar o volume escurece o card em vez de dar volume | escalaram a OPACIDADE da sombra | `volume` multiplica só a geometria; em 1 a saída é byte a byte a de antes |
+| a banda colada deixa quina quadrada no papel arredondado | raio do acento ignorando o raio do painel | modo `inside` calcula o raio por lado a partir de `panel_radius` |
+| o medalhão senta em cima do primeiro card | conteúdo sem recuo | `_paintAccent` empurra a pilha quando há medalhão no topo |
+| trocar de `preset` não muda nada | chave do dono ganha do preset, por desenho | é isso mesmo: apague a chave no YAML para o preset voltar a mandar |
 | editor perde o foco a cada tecla | o editor foi recriado ao gravar | `_writeCard` só atualiza os rótulos da lista |
 | span escolhido some ao editar o card | o editor do HA devolve a config sem `grid_options` | `_writeCard` preserva o `grid_options` anterior |
 
@@ -46,13 +56,14 @@ description: >-
 
 ```bash
 node --check dist/mw-paper-panel-card.js
-node tools/probe.js          # esperado: "✓ probe: 67 verificações passaram"
+node tools/probe.js          # esperado: "✓ probe: 103 verificações passaram"
 python3 -m http.server 8777  # bancada em /tools/preview.html (HTTP, não file://)
 tools/shots.sh               # refaz docs/*.png
 ```
 
 O probe cobre arranjos, span, divisórias, pseudo-cards, `hass`/`ll-rebuild`,
-relevo claro e de noite, achatamento dos filhos e a regra de default que não
+relevo claro e de noite, volume, imagem de fundo (camadas, véus, escape da
+URL, relevo por cima), achatamento dos filhos e a regra de default que não
 polui o YAML. **Mudança de aparência o probe não vê** — tem que olhar a
 bancada nos dois fundos (botão «alternar fundo claro/escuro»).
 
